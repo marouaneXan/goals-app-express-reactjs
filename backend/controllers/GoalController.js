@@ -11,7 +11,8 @@ const getGoals=(req,res)=>{
 // @access Private
 const setGoal=(req,res)=>{
     if(!req.body.text){
-        res.status(404).json({msg:'please add a text field'})
+        res.status(404)
+        throw new Error('please add a text field')
     }
     res.status(200).json({msg:'Goal created successfully'})
 }
