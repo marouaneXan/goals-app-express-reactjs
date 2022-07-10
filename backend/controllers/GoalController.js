@@ -8,6 +8,14 @@ const getGoals = asyncHandler(async (req, res) => {
   res.status(200).json(goals);
 });
 
+// @desc  Get goals
+// @route  GET api/goals
+// @access Public
+const getSingleGoal = asyncHandler(async (req, res) => {
+    const Goal = await goal.findById(req.params.id);
+    res.status(200).json(Goal);
+  });
+
 // @desc  Set goals
 // @route  POST api/goals
 // @access Private
@@ -54,6 +62,7 @@ const deleteGoal = asyncHandler(async (req, res) => {
 
 module.exports = {
   getGoals,
+  getSingleGoal,
   setGoal,
   updateGoal,
   deleteGoal
