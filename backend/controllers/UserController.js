@@ -1,39 +1,53 @@
 const asyncHandler = require("express-async-handler");
 const user = require("../models/userModel");
-const jwt = require('jsonwebtoken')
-const bcrypt=require('bcryptjs')
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 // @desc Register user
 // @route POST api/user
 // @access public
-const registerUser=asyncHandler(async (req,res)=>{
-    const {name,email,password}=req.body
-    //check for empty fields
-    if(!name || !email || password){
-        res.status(400)
-        throw new Error('Please add all fields')
-    }
-    //check if user exist
-    const userExist=user.findOne({email})
-    if(userExist){
-        res.status(400)
-        throw new Error('User Already exist')
-    }
-    //Hash the password
-    const salt=await bcrypt.genSalt(10)
-    const HashPassword=await bcrypt.hash(password,salt)
+const registerUser = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
+  //check for empty fields
+  if (!name || !email || password) {
+    res.status(400);
+    throw new Error("Please add all fields");
+  }
+  //check if user exist
+  const userExist = user.findOne({ email });
+  if (userExist) {
+    res.status(400);
+    throw new Error("User Already exist");
+  }
+  //Hash the password
+  const salt = await bcrypt.genSalt(10);
+  const HashPassword = await bcrypt.hash(password, salt);
 
-    
-    res.json({msg:'register user'})
-})
+  //Create user
+  const User = await user.create({
+    name,
+    email,
+    password: HashPassword,
+  });
+  if (User) {
+    res.status.json({
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+    });
+  }else{
+    res.status(400)
+    throw new Error('Invalid user data') 
+  }
+});
 
 // @desc Register user
 // @route POST api/user
 // @access public
-const loginUser=asyncHandler(async (req,res)=>{
-    res.json({msg:'login user'})
-})
-module.exports={
-    registerUser,
-    loginUser
-}
+const loginUser = asyncHandler(async (req, res) => {
+  res.json({ msg: "login user" });
+});
+module.exports = {
+  registerUser,
+  loginUser,
+};
