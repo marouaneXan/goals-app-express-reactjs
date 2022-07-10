@@ -34,6 +34,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: User.id,
       name: User.name,
       email: User.email,
+      token:generateToken(User._id)
     });
   } else {
     res.status(400);
@@ -55,9 +56,17 @@ const loginUser = asyncHandler(async (req, res) => {
     });
   }else{
     res.status(400);
-    throw new Error("Invalid user data");
+    throw new Error("Invalid user");
   }
 });
+
+// Generate JWT
+const generateToken=(id)=>{
+    return jwt.sign({id},process.env.JWT_SERCRET,{
+        expiresIn:'30d'
+    })
+}
+
 module.exports = {
   registerUser,
   loginUser,
