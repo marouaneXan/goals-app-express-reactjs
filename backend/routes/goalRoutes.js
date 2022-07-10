@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {getGoals,setGoal,updateGoal} = require('../controllers/GoalController')
+const {getGoals,setGoal,updateGoal,deleteGoal} = require('../controllers/GoalController')
 
 
 //get All goals
@@ -11,6 +11,9 @@ router.post('/',setGoal)
 
 //update goal
 router.put('/:id',updateGoal)
+
+//delete goal
+router.delete('/:id',deleteGoal)
 
 
 
