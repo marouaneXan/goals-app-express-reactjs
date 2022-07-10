@@ -22,7 +22,22 @@ const setGoal = asyncHandler(async (req, res) => {
   res.status(200).json({ msg: "Goal created successfully" });
 });
 
+
+// @desc  update goals
+// @route  PUT api/goals
+// @access Private
+const updateGoal = asyncHandler(async (req, res) => {
+    const Goal = await goal.findById(req.params.id)
+    if (!Goal) {
+      res.status(404);
+      throw new Error("Goal not found");
+    }
+    await goal.findByIdAndUpdate(req.params.id,{text:req.body.text},{new:true})
+    res.status(200).json({ msg: "Goal updated successfully" });
+  });
+
 module.exports = {
   getGoals,
   setGoal,
+  updateGoal
 };
