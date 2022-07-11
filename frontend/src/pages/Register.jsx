@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaUser } from "react-icons/fa";
 const Register = () => {
+  const [isPanding, setisPanding] = useState(false);
   const [formDta, setFormData] = useState({
     name: "",
     email: "",
@@ -8,9 +9,14 @@ const Register = () => {
     password_confirm: "",
   });
   const { name, email, password, password_confirm } = formDta;
-  const onChange = () => {};
-  const onSubmit=()=>{
-    
+  const onChange = (e) => {
+    setFormData((prevState)=>({
+      ...prevState,
+      [e.target.name]:e.target.value
+    }))
+  };
+  const onSubmit=(e)=>{
+    e.preventDefault()
   }
 
   return <>
