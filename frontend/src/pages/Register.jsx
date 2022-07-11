@@ -1,4 +1,8 @@
 import { useState, useEffect } from "react";
+import {useSelector,useDispatch} from 'react-redux'
+import {useNavigate} from 'react-router-dom'
+import {toast} from 'react-toastify'
+import {register,reset} from '../features/auth/authSlice'
 import { FaUser } from "react-icons/fa";
 const Register = () => {
   const [isPanding, setisPanding] = useState(false);
@@ -9,6 +13,20 @@ const Register = () => {
     password_confirm: "",
   });
   const { name, email, password, password_confirm } = formDta;
+  const navigate=useNavigate()
+  const dispatch=useDispatch()
+
+  const {user,isLoading,isSuccess,isError,message}=useSelector((state)=>state.auth)
+
+  useEffect(()=>{
+    if(isError){
+      toast.error(message)
+    }
+    if(isSuccess || user){
+      navigate('/')
+    }
+    dispatch(reset())
+  },[user,isSuccess,isError,message,navigate,dispatch])
   const onChange = (e) => {
     setFormData((prevState)=>({
       ...prevState,
@@ -17,6 +35,16 @@ const Register = () => {
   };
   const onSubmit=(e)=>{
     e.preventDefault()
+    if(password!==password_confirm){
+      toast.error('Password do not match')
+    }else{
+      const userData={
+        name,
+        email,
+        password
+      }
+      dispatch(register(userData))
+    }
   }
 
   return <>
