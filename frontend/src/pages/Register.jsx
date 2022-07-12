@@ -1,114 +1,118 @@
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { register, reset } from "../features/auth/authSlice";
-import { FaUser } from "react-icons/fa";
-import Spinner from "../components/Spinner";
+import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { FaUser } from 'react-icons/fa'
+import { register, reset } from '../features/auth/authSlice'
+import Spinner from '../components/Spinner'
 const Register = () => {
-  const [formDta, setFormData] = useState({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    password_confirm: "",
+    password_confirm: ""
   });
-  const { name, email, password, password_confirm } = formDta;
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const { name, email, password, password_confirm } = formData;
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const { user, isLoading, isSuccess, isError, message } = useSelector(
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
-  );
+  )
 
   useEffect(() => {
     if (isError) {
-      toast.error(message);
+      toast.error(message)
     }
     if (isSuccess || user) {
-      navigate("/");
+      navigate('/')
     }
-    dispatch(reset());
-  }, [user, isSuccess, isError, message, navigate, dispatch]);
+    dispatch(reset())
+  }, [user, isError, isSuccess, message, navigate, dispatch])
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
-    }));
-  };
+    }))
+  }
+
+
   const onSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
+
     if (password !== password_confirm) {
-      toast.error("Passwords do not match");
+      toast.error('Passwords do not match')
     } else {
       const userData = {
         name,
         email,
         password,
-      };
-      dispatch(register(userData));
+      }
+      dispatch(register(userData))
     }
-  };
+  }
   if (isLoading) {
-    return <Spinner />;
+    return <Spinner />
   }
   return (
     <>
-      <section className="heading">
+      <section className='heading'>
         <h1>
-          <FaUser />
-          Register
-          <p>Please create an account</p>
+          <FaUser /> Register
         </h1>
+        <p>Please create an account</p>
       </section>
-      <section className="form">
+
+      <section className='form'>
         <form onSubmit={onSubmit}>
-          <div className="form-group">
+          <div className='form-group'>
             <input
-              type="text"
-              className="form-control"
-              id="name"
-              name="name"
+              type='text'
+              className='form-control'
+              id='name'
+              name='name'
               value={name}
-              placeholder="Enter your name"
+              placeholder='Enter your name'
               onChange={onChange}
             />
           </div>
-          <div className="form-group">
+          <div className='form-group'>
             <input
-              type="email"
-              className="form-control"
-              id="email"
-              name="email"
+              type='email'
+              className='form-control'
+              id='email'
+              name='email'
               value={email}
-              placeholder="Enter your email adress"
+              placeholder='Enter your email'
               onChange={onChange}
             />
           </div>
-          <div className="form-group">
+          <div className='form-group'>
             <input
-              type="password"
-              className="form-control"
-              id="password"
-              name="password"
+              type='password'
+              className='form-control'
+              id='password'
+              name='password'
               value={password}
-              placeholder="Enter your password"
+              placeholder='Enter password'
               onChange={onChange}
             />
           </div>
-          <div className="form-group">
+          <div className='form-group'>
             <input
-              type="password"
-              className="form-control"
-              id="password_confirm"
-              name="password_confirm"
+              type='password'
+              className='form-control'
+              id='password_confirm'
+              name='password_confirm'
               value={password_confirm}
-              placeholder="Confirm your password"
+              placeholder='Confirm password'
               onChange={onChange}
             />
           </div>
-          <div className="form-group">
-            <button type="submit" className="btn btn-block">
-              Register
+          <div className='form-group'>
+            <button type='submit' className='btn btn-block'>
+              Submit
             </button>
           </div>
         </form>
