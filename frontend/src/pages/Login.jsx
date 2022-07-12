@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaSignInAlt } from "react-icons/fa";
 const Login = () => {
-  const [isPanding, setisPanding] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -10,7 +9,6 @@ const Login = () => {
   const onChange = (e) => {
     setFormData((prevState)=>({
       ...prevState,
-      [e.target.name]:e.target.value
     }))
   };
   const onSubmit=(e)=>{
